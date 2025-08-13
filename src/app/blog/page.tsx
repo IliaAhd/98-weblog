@@ -3,6 +3,8 @@ import PostsView from "../../components/PostsView/PostsView";
 import Warn from "@/components/Warn/Warn";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function PostsPage() {
   const posts = await prisma.post.findMany({
     include: {
