@@ -31,7 +31,7 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
       setDeleteMessage("Post deleted successfully!");
 
       setTimeout(() => {
-        router.push("/blog");
+        router.push("/profile");
       }, 3000);
     } catch {
       setDeleteMessage("Failed to delete post");
