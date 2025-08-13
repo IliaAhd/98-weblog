@@ -33,12 +33,12 @@ export default function Home() {
           <li
             style={{ display: "flex", gap: "1rem", justifyContent: "center" }}
           >
-            <button style={{ width: "300px" }}>
-              <Link href="/publish">Get started</Link>
-            </button>
-            <button style={{ width: "300px" }}>
-              <Link href="/blog">Visit blog</Link>
-            </button>
+            <Link style={{ textDecoration: "underline" }} href="/publish">
+              Get started
+            </Link>
+            <Link style={{ textDecoration: "underline" }} href="/blog">
+              Visit blog
+            </Link>
           </li>
         </ul>
       </div>
