@@ -1,0 +1,10 @@
+.breadcrumb {
+  max-width: 500px;
+  margin-inline: auto;
+  margin-top: 1rem;
+}
+
+.breadcrumb > *,
+.breadcrumb {
+  font-size: 1rem;
+}

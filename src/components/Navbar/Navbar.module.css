@@ -1,0 +1,44 @@
+.menu {
+  width: 100%;
+  border-bottom: 1px solid black;
+  padding: 1rem !important;
+  padding-bottom: 0 !important;
+  z-index: 30;
+}
+
+.signIn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.menu li,
+.menu li button {
+  font-size: 1.5rem;
+ 
+}
+
+.menu li {
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu li a {
+  padding: 0.5rem;
+}
+
+@media (width < 600px) {
+  .menu {
+    padding: 0.5rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  .menu li,
+  .menu li button {
+    font-size: 1rem;
+  }
+
+  .menu li a {
+    padding: 3px;
+  }
+}

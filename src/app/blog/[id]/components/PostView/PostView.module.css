@@ -1,0 +1,14 @@
+.post {
+  max-width: 800px;
+  margin-inline: auto;
+  margin-top: 1rem;
+}
+
+.post,
+.post > * {
+  font-size: 1.5rem !important;
+}
+
+.btn {
+  padding-block: 5px;
+}

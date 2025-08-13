@@ -1,0 +1,59 @@
+.form {
+  max-width: 50rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input {
+  padding-block: 1.5rem !important;
+}
+
+.fontSize {
+  font-size: 2rem !important;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 1rem;
+}
+
+.btn:last-child {
+  width: 100%;
+}
+
+.signinError {
+  margin-top: 3px;
+  opacity: 0;
+  font-size: 1.5rem;
+  background: #020024;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  color: white;
+  transition: opacity 0.4s;
+}
+
+.required {
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+@media (width < 800px) {
+  .form {
+    padding: 0 1rem;
+  }
+
+  .btnContainer {
+    flex-direction: column;
+  }
+}

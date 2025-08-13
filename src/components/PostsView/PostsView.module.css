@@ -1,0 +1,14 @@
+.table {
+  margin: 1rem;
+  overflow-x: auto;
+  max-width: 50rem;
+  margin-inline: auto;
+}
+
+.table th {
+  width: 100%;
+}
+
+.table > * {
+  font-size: 1.5rem;
+}
