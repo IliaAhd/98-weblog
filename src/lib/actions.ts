@@ -14,24 +14,6 @@ export async function signOutWithGoogle() {
   revalidatePath("/");
 }
 
-export async function getPosts() {
-  try {
-    const posts = await prisma.post.findMany({
-      include: {
-        author: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-    return posts;
-  } catch {
-    throw new Error(
-      "Network problem, please make sure you have a network connection"
-    );
-  }
-}
-
 export async function publishPost(formData: FormData) {
   const authorId = formData.get("authorId")?.toString();
   const title = formData
