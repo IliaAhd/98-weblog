@@ -7,12 +7,12 @@ export default function Home() {
         <ul className="tree-view" style={{ fontSize: "1.5rem" }}>
           <li>
             <strong style={{ color: "purple", fontSize: "2rem" }}>
-              ✨98 Blog — Share Your Thoughts, 90s Style ✨{" "}
+              ✨98 Weblog — Share Your Thoughts, 90s Style ✨{" "}
             </strong>
           </li>
           <br />
           <li>
-            Welcome to 98 Blog, the coolest place on the internet (if it were
+            Welcome to 98 Weblog, the coolest place on the internet (if it were
             still 1998). Post your thoughts, rants, or daily adventures just
             like tweeting — but with the charm of a Windows 98 desktop.
           </li>
