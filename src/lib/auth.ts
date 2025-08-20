@@ -7,6 +7,9 @@ import type { NextAuthConfig } from "next-auth";
 const config: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   providers: [Google],
+  session: {
+    strategy: "database",
+  },
   callbacks: {
     async session({ session, user }) {
       if (session.user && user) {
