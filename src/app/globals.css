@@ -17,5 +17,9 @@ body {
 button {
   cursor: pointer !important;
   font-size: 1rem;
+}
+
+a {
+  display: inline-block;
   padding: 0.5rem;
 }

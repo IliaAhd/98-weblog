@@ -2,22 +2,29 @@
 
 import { signInWithGoogle, signOutWithGoogle } from "@/lib/actions";
 import { useSession } from "next-auth/react";
+import styles from "@/components/SignIn/SignIn.module.css";
 
 export default function SignIn() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") return <button>Loading...</button>;
+  if (status === "loading")
+    return <button className={styles.btn}>Loading...</button>;
 
   if (session?.user)
     return (
       <form action={signOutWithGoogle}>
-        <button>{session.user.name}/ Sign Out</button>
+        <button className={styles.btn}>
+          <span className={styles.userName}>{session.user.name} /</span> Sign
+          Out
+        </button>
       </form>
     );
 
   return (
     <form action={signInWithGoogle}>
-      <button type="submit">Signin with Google</button>
+      <button className={styles.btn} type="submit">
+        Signin with Google
+      </button>
     </form>
   );
 }

@@ -58,29 +58,33 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            paddingInline: "5px",
-            margin: "0 !important",
+            paddingInline: "8px",
+            paddingBlock: "5px",
+            marginRight: "0 !important",
           }}
         >
           <div>{post?.title}</div>
-          <div>
-            {post.authorId === data?.user?.id && (
-              <>
-                {/* <button
+
+          {post.authorId === data?.user?.id && (
+            <>
+              {/* <button
                   onClick={() => setShowModal("edit")}
                   className={`default ${styles.btn}`}
                 >
                   <Image width={28} height={28} src={editImg} alt="edit" />
                 </button> */}
-                <button
-                  onClick={() => setShowModal("delete")}
-                  className={`default ${styles.btn}`}
-                >
-                  <Image width={28} height={28} src={trashImg} alt="trash" />
-                </button>
-              </>
-            )}
-          </div>
+
+              <Image
+                className={styles.btn}
+                onClick={() => setShowModal("delete")}
+                width={35}
+                height={35}
+                src={trashImg}
+                alt="trash"
+                title="Delete your post"
+              />
+            </>
+          )}
         </div>
       </div>
       <div className="window-body">{post?.content}</div>

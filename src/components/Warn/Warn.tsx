@@ -36,6 +36,7 @@ export default function Warn({
               display: "flex",
               justifyContent: "flex-end",
               alignItems: "center",
+              fontSize: "1rem",
             }}
           >
             {!children ? (

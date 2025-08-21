@@ -15,16 +15,18 @@
 .menu li,
 .menu li button {
   font-size: 1.5rem;
- 
 }
 
 .menu li {
   cursor: pointer;
-  padding: 0;
+  padding: 0 !important;
 }
 
 .menu li a {
-  padding: 0.5rem;
+  padding: 1rem;
+  margin: 0 !important;
+  width: 100%;
+  height: 100%;
 }
 
 @media (width < 600px) {
@@ -35,10 +37,10 @@
 
   .menu li,
   .menu li button {
-    font-size: 1rem;
+    font-size: 0.9rem !important;
   }
 
   .menu li a {
-    padding: 3px;
+    padding: 8px !important;
   }
 }

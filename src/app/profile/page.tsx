@@ -3,6 +3,7 @@ import SignIn from "@/components/SignIn/SignIn";
 import Warn from "@/components/Warn/Warn";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -21,8 +22,31 @@ export default async function ProfilePage() {
     },
   });
 
+  console.log(user?.Post);
+
+  if (!user?.Post || !user.Post.length)
+    return (
+      <Warn title="No posts yet" message="Share your first post">
+        <button>
+          <Link href="/publish">Publish</Link>
+        </button>
+      </Warn>
+    );
+
   return (
     <div>
+      <div
+        className="title-bar"
+        style={{
+          maxWidth: "800px",
+          fontSize: "1rem",
+          marginTop: "1rem",
+          marginInline: "auto",
+        }}
+      >
+        <div className="title-bar-text">Your posts</div>
+      </div>
+
       <PostsView posts={user?.Post} isProfile={true} />
     </div>
   );
