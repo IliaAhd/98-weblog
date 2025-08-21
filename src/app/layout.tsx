@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
+import Footer from "@/components/Footer/Footer";
 
 export const metadata: Metadata = {
   title: "98 Weblog",
@@ -19,9 +20,23 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SessionProvider>
-          <Navbar />
-          <Breadcrumbs />
-          {children}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              minHeight: "100vh",
+            }}
+          >
+            <div>
+              <Navbar />
+              <Breadcrumbs />
+              <main>{children}</main>
+            </div>
+            <div>
+              <Footer />
+            </div>
+          </div>
         </SessionProvider>
       </body>
     </html>
