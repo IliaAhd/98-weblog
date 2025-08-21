@@ -25,7 +25,7 @@ export default async function PostsPage() {
     );
 
   return (
-    <div>
+    <div style={{ marginTop: "1rem" }}>
       <PostsView posts={posts} />
     </div>
   );
