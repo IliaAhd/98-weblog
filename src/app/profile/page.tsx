@@ -22,8 +22,6 @@ export default async function ProfilePage() {
     },
   });
 
-  console.log(user?.Post);
-
   if (!user?.Post || !user.Post.length)
     return (
       <Warn title="No posts yet" message="Share your first post">

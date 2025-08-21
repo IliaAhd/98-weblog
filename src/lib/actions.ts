@@ -38,3 +38,27 @@ export async function publishPost(formData: FormData) {
     data: newPost,
   });
 }
+
+export async function editPost(formData: FormData) {
+  const authorId = formData.get("authorId")?.toString();
+  const postId = formData.get("postId");
+  const title = formData
+    .get("title")
+    ?.toString()
+    .trim()
+    .slice(0, MAX_TITLE_LENGTH);
+  const content = formData
+    .get("content")
+    ?.toString()
+    .slice(0, MAX_CONTENT_LENGTH);
+
+  if (!authorId || !title || !content || !postId) return "error";
+
+  return await prisma.post.update({
+    where: { id: +postId },
+    data: {
+      title,
+      content,
+    },
+  });
+}

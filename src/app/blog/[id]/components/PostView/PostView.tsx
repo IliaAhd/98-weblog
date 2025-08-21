@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import trashImg from "/public/recycle_bin_file.png";
+import editImg from "/public/true_type_paint.png";
 
 type PostWithAuthor = Post & {
   author: User | null;
@@ -28,6 +29,7 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
       await fetch(`/api/publish/${post.id}`, {
         method: "DELETE",
       });
+
       setDeleteMessage("Post deleted successfully!");
 
       setTimeout(() => {
@@ -39,6 +41,32 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
       setLoading(false);
     }
   }
+
+  const handleEditPost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const res = await fetch("/api/publish", {
+        method: "PATCH",
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        router.push(`/blog/${data.result.id}`);
+        setShowModal(null);
+      } else {
+        console.error("Failed to edit post");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (deleteMessage)
     return (
@@ -60,19 +88,20 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
             width: "100%",
             paddingInline: "8px",
             paddingBlock: "5px",
-            marginRight: "0 !important",
           }}
         >
           <div>{post?.title}</div>
 
           {post.authorId === data?.user?.id && (
-            <>
-              {/* <button
-                  onClick={() => setShowModal("edit")}
-                  className={`default ${styles.btn}`}
-                >
-                  <Image width={28} height={28} src={editImg} alt="edit" />
-                </button> */}
+            <div>
+              <Image
+                className={styles.btn}
+                onClick={() => setShowModal("edit")}
+                width={35}
+                height={35}
+                src={editImg}
+                alt="edit"
+              />
 
               <Image
                 className={styles.btn}
@@ -83,25 +112,27 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
                 alt="trash"
                 title="Delete your post"
               />
-            </>
+            </div>
           )}
         </div>
       </div>
+
       <div className="window-body">{post?.content}</div>
+
       <div className="status-bar">
         <p className="status-bar-field">Author: {post?.author?.name}</p>
         <p className="status-bar-field">
           Word Count: {post?.content?.split(" ").length}
         </p>
         <p className="status-bar-field">
-          Created At: {post?.createdAt?.toLocaleDateString()}
+          Created At: {new Date(post?.createdAt).toLocaleDateString()}
         </p>
       </div>
 
       {showModal === "delete" ? (
         <Warn
           title="Warning!"
-          message="Are you sure want to delete your post?"
+          message="Are you sure you want to delete your post?"
           handleClose={() => setShowModal(null)}
         >
           <>
@@ -124,13 +155,54 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
           message="Edit your post."
           handleClose={() => setShowModal(null)}
         >
-          <button
-            disabled={loading}
-            className="default"
-            onClick={() => setShowModal(null)}
-          >
-            Close
-          </button>
+          <div className={styles.form}>
+            <form onSubmit={handleEditPost}>
+              <div className="field-row-stacked">
+                <label htmlFor="text18">Title</label>
+                <input
+                  disabled={loading}
+                  defaultValue={post.title}
+                  id="text18"
+                  type="text"
+                  name="title"
+                />
+              </div>
+
+              <div className="field-row-stacked">
+                <label htmlFor="text20">Content</label>
+                <textarea
+                  disabled={loading}
+                  defaultValue={post.content || undefined}
+                  id="text20"
+                  rows={8}
+                  name="content"
+                ></textarea>
+              </div>
+
+              <input
+                disabled={loading}
+                type="hidden"
+                defaultValue={post.authorId}
+                name="authorId"
+              />
+              <input
+                disabled={loading}
+                type="hidden"
+                defaultValue={post.id}
+                name="postId"
+              />
+
+              <div className={styles.buttons}>
+                <button disabled={loading} onClick={() => setShowModal(null)}>
+                  Close
+                </button>
+
+                <button className="default" disabled={loading}>
+                  Edit
+                </button>
+              </div>
+            </form>
+          </div>
         </Warn>
       ) : null}
     </div>
