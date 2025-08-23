@@ -117,7 +117,9 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
         </div>
       </div>
 
-      <div className="window-body">{post?.content}</div>
+      <div className="window-body">
+        <pre style={{ whiteSpace: "pre-wrap" }}>{post?.content}</pre>
+      </div>
 
       <div className="status-bar">
         <p className="status-bar-field">Author: {post?.author?.name}</p>
