@@ -1,36 +1,49 @@
 .form {
   max-width: 50rem;
+  padding: 0 !important;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   margin-bottom: 3rem;
+  gap: 4px;
+}
+
+@media (width < 800px) {
+  .form {
+    padding: 0 1rem;
+  }
+}
+
+.label {
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (width <= 600px) {
+  .label {
+    font-size: 1.5rem !important;
+  }
 }
 
 .input {
   padding-block: 1.5rem !important;
 }
 
-.fontSize {
-  font-size: 2rem !important;
-}
-
-.btnContainer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
 .btn {
+  margin-top: 1rem;
   padding: 1rem;
-}
-
-.btn:last-child {
   width: 100%;
 }
 
+@media (width <= 600px) {
+  .btn {
+    font-size: 1rem;
+    padding: 0.5rem;
+  }
+}
+
 .signinError {
-  margin-top: 3px;
   opacity: 0;
   font-size: 1.5rem;
   background: #020024;
@@ -42,19 +55,44 @@
   );
   color: white;
   transition: opacity 0.4s;
+  padding: 4px;
+}
+
+@media (width <= 600px) {
+  .signinError {
+    font-size: 1rem;
+  }
+}
+
+@media (width <= 400px) {
+  .signinError {
+    font-size: 0.8rem;
+  }
+}
+
+.requirements {
+  display: flex;
+  gap: 1rem;
 }
 
 .required {
+  font-size: 0.8rem;
   opacity: 0;
   transition: opacity 0.4s;
+  color: #e35015;
+  align-self: flex-end;
 }
 
-@media (width < 800px) {
-  .form {
-    padding: 0 1rem;
-  }
+.length {
+  font-size: 1rem;
+}
 
-  .btnContainer {
-    flex-direction: column;
+.fontSize {
+  font-size: 2rem;
+}
+
+@media (width <=650px) {
+  .fontSize {
+    font-size: 1.3rem;
   }
 }

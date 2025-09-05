@@ -24,7 +24,9 @@ export default function Form() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormDataInterface>();
-  const [posted, setPosted] = useState(false);
+  const [posted, setPosted] = useState<boolean>(false);
+  const [maxTitle, setMaxTitle] = useState<number>(0);
+  const [maxContent, setMaxContent] = useState<number>(0);
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -71,48 +73,74 @@ export default function Form() {
           className={styles.signinError}
           style={errors.authorId && { opacity: 1 }}
         >
-          You have to sign in before publishing
+          You have to sign in before publishing!
         </div>
 
         <div className="field-row-stacked">
-          <label style={{ fontSize: "2rem" }} htmlFor="text18">
-            Post Title
+          <label className={styles.label} htmlFor="text18">
+            <div className={styles.requirements}>
+              Title
+              <span
+                className={styles.required}
+                style={errors.title && { opacity: 1 }}
+              >
+                This field is required!
+              </span>
+            </div>
+            <span className={styles.length}>
+              <span
+                style={maxTitle === MAX_TITLE_LENGTH ? { color: "red" } : {}}
+              >
+                {maxTitle}
+              </span>
+              /{MAX_TITLE_LENGTH}
+            </span>
           </label>
-          <span
-            className={styles.required}
-            style={errors.title && { opacity: 1 }}
-          >
-            This field is required
-          </span>
           <input
             className={`${styles.input} ${styles.fontSize}`}
             id="text18"
             type="text"
+            maxLength={MAX_TITLE_LENGTH}
             {...register("title", {
               required: true,
               maxLength: MAX_TITLE_LENGTH,
+              onChange: (e) => setMaxTitle(e.target.value.length),
             })}
             disabled={isSubmitting}
           />
         </div>
 
         <div className="field-row-stacked">
-          <label className={styles.fontSize} htmlFor="text20">
-            Additional notes
+          <label className={styles.label} htmlFor="text20">
+            <div className={styles.requirements}>
+              Post content
+              <span
+                className={styles.required}
+                style={errors.content && { opacity: 1 }}
+              >
+                This field is required!
+              </span>
+            </div>
+            <span className={styles.length}>
+              <span
+                style={
+                  maxContent === MAX_CONTENT_LENGTH ? { color: "red" } : {}
+                }
+              >
+                {maxContent}
+              </span>
+              /{MAX_CONTENT_LENGTH}
+            </span>
           </label>
-          <span
-            className={styles.required}
-            style={errors.content && { opacity: 1 }}
-          >
-            This field is required
-          </span>
           <textarea
             className={styles.fontSize}
             id="text20"
             rows={10}
+            maxLength={MAX_CONTENT_LENGTH}
             {...register("content", {
               required: true,
               maxLength: MAX_CONTENT_LENGTH,
+              onChange: (e) => setMaxContent(e.target.value.length),
             })}
             disabled={isSubmitting}
           ></textarea>
@@ -124,7 +152,7 @@ export default function Form() {
           />
         </div>
 
-        <div className={styles.btnContainer}>
+        <div>
           <button
             type="submit"
             className={`${styles.fontSize} ${styles.btn} default`}
