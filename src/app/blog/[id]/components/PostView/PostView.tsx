@@ -121,7 +121,7 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
         <pre style={{ whiteSpace: "pre-wrap" }}>{post?.content}</pre>
       </div>
 
-      <div className="status-bar">
+      <div className={`status-bar ${styles.status}`}>
         <p className="status-bar-field">Author: {post?.author?.name}</p>
         <p className="status-bar-field">
           Word Count: {post?.content?.split(" ").length}

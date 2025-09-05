@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 import Footer from "@/components/Footer/Footer";
+import Container from "@/components/Container/Container";
 
 export const metadata: Metadata = {
   title: "98 Weblog",
@@ -30,8 +31,10 @@ export default function RootLayout({
           >
             <div>
               <Navbar />
-              <Breadcrumbs />
-              <main>{children}</main>
+              <Container>
+                <Breadcrumbs />
+                <main>{children}</main>
+              </Container>
             </div>
             <div>
               <Footer />

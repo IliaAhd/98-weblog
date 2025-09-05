@@ -1,7 +1,7 @@
-import { prisma } from "@/lib/prisma";
-import PostsView from "../../components/PostsView/PostsView";
 import Warn from "@/components/Warn/Warn";
+import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import PostsView from "../../components/PostsView/PostsView";
 
 export const dynamic = "force-dynamic";
 
@@ -25,8 +25,8 @@ export default async function PostsPage() {
     );
 
   return (
-    <div style={{ marginTop: "1rem" }}>
+    <>
       <PostsView posts={posts} />
-    </div>
+    </>
   );
 }

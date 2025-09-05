@@ -27,7 +27,7 @@ export default function PostsView({
         </thead>
         <tbody>
           {posts.map((post) => (
-            <tr key={post.id}>
+            <tr className={styles.row} key={post.id}>
               <td>
                 <Link href={`/blog/${post.id}`}>{post.title} </Link>
               </td>

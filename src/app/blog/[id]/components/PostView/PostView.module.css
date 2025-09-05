@@ -35,3 +35,18 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.status {
+  display: flex;
+}
+
+.status p {
+  padding: 0.5rem;
+}
+
+@media (width <= 850px) {
+  .status {
+    font-size: 1rem !important;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,29 @@
+.list {
+  font-size: 1.2rem !important;
+  padding: 1rem !important;
+}
+
+.title {
+  font-size: 2rem;
+  color: purple;
+}
+
+@media (width <= 600px) {
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .title span {
+    display: none;
+  }
+}
+
+.navList {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.navLink {
+  text-decoration: underline !important;
+}
