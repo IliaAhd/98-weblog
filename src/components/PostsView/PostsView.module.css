@@ -3,6 +3,7 @@
   overflow-x: auto;
   max-width: 800px;
   margin-inline: auto;
+  border: 1px solid #999;
 }
 
 .table th {

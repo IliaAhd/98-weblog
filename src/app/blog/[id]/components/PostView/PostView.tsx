@@ -80,15 +80,8 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
     <div className={`${styles.post} window`}>
       <div className="title-bar">
         <div
-          className="title-bar-text"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            paddingInline: "8px",
-            paddingBlock: "5px",
-          }}
+          className={`title-bar-text ${styles.title}`}
+  
         >
           <div>{post?.title}</div>
 
@@ -118,7 +111,7 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
       </div>
 
       <div className="window-body">
-        <pre style={{ whiteSpace: "pre-wrap" }}>{post?.content}</pre>
+        <pre className={styles.content}>{post?.content}</pre>
       </div>
 
       <div className={`status-bar ${styles.status}`}>

@@ -36,6 +36,32 @@
   align-items: center;
 }
 
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-inline: 8px;
+  margin: 0;
+  padding-block: 5px;
+}
+
+@media (width <= 700px) {
+  .title div {
+    font-size: 1rem;
+  }
+}
+
+.content {
+  white-space: pre-wrap;
+}
+
+@media (width <= 700px) {
+  .content {
+    font-size: 1.2rem;
+  }
+}
+
 .status {
   display: flex;
 }

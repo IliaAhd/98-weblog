@@ -4,6 +4,7 @@ import Warn from "@/components/Warn/Warn";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Profile from "./components/Profile/Profile";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -33,19 +34,22 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <div
-        className="title-bar"
-        style={{
-          maxWidth: "800px",
-          fontSize: "1rem",
-          marginTop: "1rem",
-          marginInline: "auto",
-        }}
-      >
-        <div className="title-bar-text">Your posts</div>
-      </div>
+      <Profile session={session} />
 
-      <PostsView posts={user?.Post} isProfile={true} />
+      <div>
+        <div
+          className="title-bar"
+          style={{
+            maxWidth: "800px",
+            fontSize: "1rem",
+            marginTop: "1rem",
+            marginInline: "auto",
+          }}
+        >
+          <div className="title-bar-text">Your posts</div>
+        </div>
+        <PostsView posts={user?.Post} isProfile={true} />
+      </div>
     </div>
   );
 }
