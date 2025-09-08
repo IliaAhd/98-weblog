@@ -26,7 +26,7 @@ export default async function UsersProfile({
       <div
         style={{
           fontSize: "1.3rem",
-          width: "1100px",
+          maxWidth: "1100px",
           marginInline: "auto",
           padding: "0.5rem",
         }}
