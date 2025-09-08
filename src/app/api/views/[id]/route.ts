@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const postId = Number(params.id);
+  const postId = Number((await params).id);
 
   // Read cookie
   const cookie = req.cookies.get("viewed_posts")?.value;
