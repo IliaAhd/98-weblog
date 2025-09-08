@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import PostView from "./components/PostView/PostView";
 import Warn from "@/components/Warn/Warn";
 import Link from "next/link";
+import Views from "@/components/Views";
 
 export default async function Post({
   params,
@@ -17,7 +18,10 @@ export default async function Post({
   return (
     <div>
       {post ? (
-        <PostView post={post} />
+        <>
+          <PostView post={post} />
+          <Views postId={post.id} />
+        </>
       ) : (
         <Warn title="Error!" message="Post not found">
           <>

@@ -79,10 +79,7 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
   return (
     <div className={`${styles.post} window`}>
       <div className="title-bar">
-        <div
-          className={`title-bar-text ${styles.title}`}
-  
-        >
+        <div className={`title-bar-text ${styles.title}`}>
           <div>{post?.title}</div>
 
           {post.authorId === data?.user?.id && (
@@ -117,7 +114,8 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
       <div className={`status-bar ${styles.status}`}>
         <p className="status-bar-field">Author: {post?.author?.name}</p>
         <p className="status-bar-field">
-          Word Count: {post?.content?.split(" ").length}
+          <span>Views: </span>
+          {post.views}
         </p>
         <p className="status-bar-field">
           Created At: {new Date(post?.createdAt).toLocaleDateString()}
