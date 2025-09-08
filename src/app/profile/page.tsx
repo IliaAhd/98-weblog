@@ -42,7 +42,7 @@ export default async function ProfilePage() {
         <div
           className="title-bar"
           style={{
-            maxWidth: "800px",
+            maxWidth: "1100px",
             fontSize: "1rem",
             marginTop: "1rem",
             marginInline: "auto",

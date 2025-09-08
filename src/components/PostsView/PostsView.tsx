@@ -19,7 +19,7 @@ export default function PostsView({
     <div className={`${styles.table} sunken-panel`}>
       <table className="interactive">
         <thead>
-          <tr style={{ width: "100%" }}>
+          <tr>
             <th>Title</th>
             <th>Post</th>
             <th>{!isProfile ? "Author" : "Creation date"}</th>
@@ -37,9 +37,13 @@ export default function PostsView({
                 </Link>
               </td>
               <td>
-                {!isProfile
-                  ? post.author?.name
-                  : post.createdAt.toLocaleDateString()}
+                {!isProfile ? (
+                  <Link href={`/profile/${post.author?.id}`}>
+                    {post.author?.name}
+                  </Link>
+                ) : (
+                  post.createdAt.toLocaleDateString()
+                )}
               </td>
             </tr>
           ))}
