@@ -10,6 +10,7 @@ const Breadcrumbs = () => {
 
   const pathSegments = pathname.split("/").filter(Boolean);
 
+  // build crumbs
   const crumbs = pathSegments.map((segment, index) => {
     const href = "/" + pathSegments.slice(0, index + 1).join("/");
     const label = decodeURIComponent(segment.replace(/-/g, " "));
@@ -20,6 +21,9 @@ const Breadcrumbs = () => {
   });
 
   if (pathname === "/") return null;
+
+  // ✅ drop the last item
+  const crumbsWithoutLast = crumbs.slice(0, -1);
 
   return (
     <div className={`window ${styles.breadcrumb}`}>
@@ -38,16 +42,12 @@ const Breadcrumbs = () => {
           <Link href="/" className="link">
             Home
           </Link>
-          {crumbs.map((crumb, index) => (
+          {crumbsWithoutLast.map((crumb, index) => (
             <React.Fragment key={index}>
               <span style={{ margin: "0 4px" }}>&gt;</span>
-              {index === crumbs.length - 1 ? (
-                <span>{crumb.label}</span>
-              ) : (
-                <Link href={crumb.href} className="link">
-                  {crumb.label}
-                </Link>
-              )}
+              <Link href={crumb.href} className="link">
+                {crumb.label}
+              </Link>
             </React.Fragment>
           ))}
         </div>
