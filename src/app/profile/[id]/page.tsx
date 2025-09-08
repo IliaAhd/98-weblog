@@ -1,4 +1,5 @@
 import PostsView from "@/components/PostsView/PostsView";
+import Warn from "@/components/Warn/Warn";
 import { prisma } from "@/lib/prisma";
 
 export default async function UsersProfile({
@@ -17,6 +18,8 @@ export default async function UsersProfile({
       },
     },
   });
+
+  if (!user) return <Warn title="Error!" message="User not found" />;
 
   return (
     <div>
