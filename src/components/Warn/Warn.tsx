@@ -1,5 +1,5 @@
 import styles from "@/components/Warn/Warn.module.css";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import warnImg from "/public/msg_warning.png";
 import Link from "next/link";
 
@@ -8,11 +8,13 @@ export default function Warn({
   message,
   title,
   handleClose,
+  img,
 }: {
   children?: React.ReactElement;
   title?: string;
   message: string;
   handleClose?: () => void;
+  img?: StaticImageData;
 }) {
   return (
     <div className={styles.bg}>
@@ -28,7 +30,7 @@ export default function Warn({
         </div>
         <div className="window-body">
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Image width={40} height={40} src={warnImg} alt="warn" />
+            <Image width={40} height={40} src={img || warnImg} alt="warn" />
             <p className={styles.fontSize}>{message}</p>
           </div>
           <div

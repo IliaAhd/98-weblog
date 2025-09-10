@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import successImg from "/public/success.png";
 
 interface FormDataInterface {
   authorId: string;
@@ -59,6 +60,7 @@ export default function Form() {
       <Warn
         title="Post published successfully!"
         message="Navigating in 3 seconds to your post to see it live..."
+        img={successImg}
       />
     );
 

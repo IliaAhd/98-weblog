@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import trashImg from "/public/recycle_bin_file.png";
 import editImg from "/public/true_type_paint.png";
+import successImg from "/public/success.png";
 import { deletePost, editPost } from "@/lib/actions";
 
 interface PostWithAuthor extends Post {
@@ -50,7 +51,7 @@ export default function PostView({ post }: PostViewProps) {
     try {
       setLoading(true);
       const formData = new FormData(e.currentTarget);
-      
+
       await editPost(formData);
       setShowModal(null);
     } catch {
@@ -75,6 +76,7 @@ export default function PostView({ post }: PostViewProps) {
                   height={35}
                   src={editImg}
                   alt="edit"
+                  title="Edit your post"
                 />
                 <Image
                   className={styles.btn}
@@ -126,6 +128,7 @@ export default function PostView({ post }: PostViewProps) {
         <Warn
           title={message}
           message="Navigating to your profile page in 3 seconds..."
+          img={successImg}
         />
       )}
 
@@ -134,6 +137,7 @@ export default function PostView({ post }: PostViewProps) {
           title="Editing!"
           message="Edit your post."
           handleClose={() => setShowModal(null)}
+          img={editImg}
         >
           <div className={styles.form}>
             <form onSubmit={handleEditPost}>
