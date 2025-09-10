@@ -15,25 +15,24 @@ export default async function Post({
     include: { author: true },
   });
 
-  return (
-    <div>
-      {post ? (
+  if (!post)
+    return (
+      <Warn title="Error!" message="Post not found">
         <>
-          <PostView post={post} />
-          <Views postId={post.id} />
+          <button>
+            <Link href="/">Go to Home</Link>
+          </button>
+          <button>
+            <Link href="/blog">Visit weblog</Link>
+          </button>
         </>
-      ) : (
-        <Warn title="Error!" message="Post not found">
-          <>
-            <button>
-              <Link href="/">Go to Home</Link>
-            </button>
-            <button>
-              <Link href="/blog">Visit weblog</Link>
-            </button>
-          </>
-        </Warn>
-      )}
-    </div>
+      </Warn>
+    );
+
+  return (
+    <>
+      <PostView post={post} />
+      <Views postId={post.id} />
+    </>
   );
 }

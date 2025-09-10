@@ -9,140 +9,127 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import trashImg from "/public/recycle_bin_file.png";
 import editImg from "/public/true_type_paint.png";
+import { deletePost, editPost } from "@/lib/actions";
 
-type PostWithAuthor = Post & {
+interface PostWithAuthor extends Post {
   author: User | null;
-};
+}
 
-export default function PostView({ post }: { post: PostWithAuthor }) {
+interface PostViewProps {
+  post: PostWithAuthor;
+}
+
+export default function PostView({ post }: PostViewProps) {
   const { data } = useSession();
-  const [showModal, setShowModal] = useState<"delete" | "edit" | null>(null);
-  const [deleteMessage, setDeleteMessage] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [showModal, setShowModal] = useState<"delete" | "edit" | null>(null);
+  const [message, setMessage] = useState<null | string>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<null | string>(null);
 
   async function handleDeletePost() {
     try {
       setLoading(true);
       if (post.authorId !== data?.user?.id) return;
 
-      await fetch(`/api/publish/${post.id}`, {
-        method: "DELETE",
-      });
+      await deletePost(post.id);
 
-      setDeleteMessage("Post deleted successfully!");
-
-      setTimeout(() => {
-        router.push("/profile");
-      }, 3000);
-    } catch {
-      setDeleteMessage("Failed to delete post");
+      setMessage("Post deleted successfully!");
+      setTimeout(() => router.push("/profile"), 3000);
+    } catch (err) {
+      console.error("Delete error:", err);
+      setError("Failed to delete post!");
     } finally {
       setLoading(false);
     }
   }
 
-  const handleEditPost = async (e: React.FormEvent<HTMLFormElement>) => {
+  async function handleEditPost(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData(e.currentTarget);
 
     try {
-      const res = await fetch("/api/publish", {
-        method: "PATCH",
-        body: formData,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        router.push(`/blog/${data.result.id}`);
-        setShowModal(null);
-      } else {
-        console.error("Failed to edit post");
-      }
-    } catch (err) {
-      console.error(err);
+      setLoading(true);
+      const formData = new FormData(e.currentTarget);
+      
+      await editPost(formData);
+      setShowModal(null);
+    } catch {
+      setError("Failed to edit post!");
     } finally {
       setLoading(false);
     }
-  };
-
-  if (deleteMessage)
-    return (
-      <Warn
-        title={deleteMessage}
-        message="Navigating to blog page in 3 seconds..."
-      />
-    );
+  }
 
   return (
-    <div className={`${styles.post} window`}>
-      <div className="title-bar">
-        <div className={`title-bar-text ${styles.title}`}>
-          <div>{post?.title}</div>
+    <>
+      <div className={`${styles.post} window`}>
+        <div className="title-bar">
+          <div className={`title-bar-text ${styles.title}`}>
+            <div>{post.title}</div>
+            {post.authorId === data?.user?.id && (
+              <div>
+                <Image
+                  className={styles.btn}
+                  onClick={() => setShowModal("edit")}
+                  width={35}
+                  height={35}
+                  src={editImg}
+                  alt="edit"
+                />
+                <Image
+                  className={styles.btn}
+                  onClick={() => setShowModal("delete")}
+                  width={35}
+                  height={35}
+                  src={trashImg}
+                  alt="delete"
+                  title="Delete your post"
+                />
+              </div>
+            )}
+          </div>
+        </div>
 
-          {post.authorId === data?.user?.id && (
-            <div>
-              <Image
-                className={styles.btn}
-                onClick={() => setShowModal("edit")}
-                width={35}
-                height={35}
-                src={editImg}
-                alt="edit"
-              />
+        <div className="window-body">
+          <pre className={styles.content}>{post.content}</pre>
+        </div>
 
-              <Image
-                className={styles.btn}
-                onClick={() => setShowModal("delete")}
-                width={35}
-                height={35}
-                src={trashImg}
-                alt="trash"
-                title="Delete your post"
-              />
-            </div>
-          )}
+        <div className={`status-bar ${styles.status}`}>
+          <p className="status-bar-field">Author: {post.author?.name}</p>
+          <p className="status-bar-field">Views: {post.views}</p>
+          <p className="status-bar-field">
+            Created At: {new Date(post.createdAt).toLocaleDateString()}
+          </p>
         </div>
       </div>
 
-      <div className="window-body">
-        <pre className={styles.content}>{post?.content}</pre>
-      </div>
-
-      <div className={`status-bar ${styles.status}`}>
-        <p className="status-bar-field">Author: {post?.author?.name}</p>
-        <p className="status-bar-field">
-          <span>Views: </span>
-          {post.views}
-        </p>
-        <p className="status-bar-field">
-          Created At: {new Date(post?.createdAt).toLocaleDateString()}
-        </p>
-      </div>
-
-      {showModal === "delete" ? (
+      {showModal === "delete" && (
         <Warn
           title="Warning!"
           message="Are you sure you want to delete your post?"
           handleClose={() => setShowModal(null)}
         >
           <>
-            <button
-              disabled={loading}
-              className="default"
-              onClick={() => setShowModal(null)}
-            >
+            <button disabled={loading} onClick={() => setShowModal(null)}>
               Close
             </button>
-
             <button disabled={loading} onClick={handleDeletePost}>
               Delete
             </button>
           </>
         </Warn>
-      ) : showModal === "edit" ? (
+      )}
+
+      {error && <Warn title="Something went wrong!" message={error} />}
+
+      {message && (
+        <Warn
+          title={message}
+          message="Navigating to your profile page in 3 seconds..."
+        />
+      )}
+
+      {showModal === "edit" && (
         <Warn
           title="Editing!"
           message="Edit your post."
@@ -151,45 +138,38 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
           <div className={styles.form}>
             <form onSubmit={handleEditPost}>
               <div className="field-row-stacked">
-                <label htmlFor="text18">Title</label>
+                <label htmlFor="title">Title</label>
                 <input
-                  disabled={loading}
-                  defaultValue={post.title}
-                  id="text18"
-                  type="text"
+                  id="title"
                   name="title"
+                  type="text"
+                  defaultValue={post.title}
+                  disabled={loading}
                 />
               </div>
 
               <div className="field-row-stacked">
-                <label htmlFor="text20">Content</label>
+                <label htmlFor="content">Content</label>
                 <textarea
-                  disabled={loading}
-                  defaultValue={post.content || undefined}
-                  id="text20"
-                  rows={8}
+                  id="content"
                   name="content"
-                ></textarea>
+                  rows={8}
+                  defaultValue={post.content || undefined}
+                  disabled={loading}
+                />
               </div>
 
-              <input
-                disabled={loading}
-                type="hidden"
-                defaultValue={post.authorId}
-                name="authorId"
-              />
-              <input
-                disabled={loading}
-                type="hidden"
-                defaultValue={post.id}
-                name="postId"
-              />
+              <input type="hidden" name="authorId" value={post.authorId} />
+              <input type="hidden" name="postId" value={post.id} />
 
               <div className={styles.buttons}>
-                <button disabled={loading} onClick={() => setShowModal(null)}>
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={() => setShowModal(null)}
+                >
                   Close
                 </button>
-
                 <button className="default" disabled={loading}>
                   Edit
                 </button>
@@ -197,7 +177,7 @@ export default function PostView({ post }: { post: PostWithAuthor }) {
             </form>
           </div>
         </Warn>
-      ) : null}
-    </div>
+      )}
+    </>
   );
 }

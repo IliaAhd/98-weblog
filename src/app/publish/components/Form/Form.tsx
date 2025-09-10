@@ -2,6 +2,7 @@
 
 import styles from "@/app/publish/components/Form/Form.module.css";
 import Warn from "@/components/Warn/Warn";
+import { publishPost } from "@/lib/actions";
 import { MAX_CONTENT_LENGTH, MAX_TITLE_LENGTH } from "@/utils/constants";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -42,19 +43,14 @@ export default function Form() {
     formData.append("title", data.title);
     formData.append("content", data.content);
 
-    const res = await fetch("/api/publish", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await publishPost(formData);
 
-    reset();
-
-    if (res.ok) {
-      const data = await res.json();
+    if (res) {
+      reset();
       setPosted(true);
-      setTimeout(() => router.push(`/blog/${data.result.id}`), 3000);
+      setTimeout(() => router.push(`/blog/${res.id}`), 3000);
     } else {
-      console.error("Failed to publish post");
+      throw new Error("Failed to publish post");
     }
   };
 
