@@ -1,10 +1,7 @@
 import { Post, User } from "@prisma/client";
 import styles from "./PostsView.module.css";
 import Link from "next/link";
-
-type PostWithAuthor = Post & {
-  author?: User | null;
-};
+import { PostWithAuthor } from "@/utils/types";
 
 export default function PostsView({
   posts,
