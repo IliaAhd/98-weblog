@@ -70,6 +70,10 @@
   padding: 0.5rem;
 }
 
+.status a {
+  padding: 0;
+}
+
 @media (width <= 850px) {
   .status {
     font-size: 1rem !important;

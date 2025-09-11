@@ -11,6 +11,7 @@ import trashImg from "/public/recycle_bin_file.png";
 import editImg from "/public/true_type_paint.png";
 import successImg from "/public/success.png";
 import { deletePost, editPost } from "@/lib/actions";
+import Link from "next/link";
 
 interface PostWithAuthor extends Post {
   author: User | null;
@@ -97,7 +98,10 @@ export default function PostView({ post }: PostViewProps) {
         </div>
 
         <div className={`status-bar ${styles.status}`}>
-          <p className="status-bar-field">Author: {post.author?.name}</p>
+          <p className="status-bar-field">
+            Author:{" "}
+            <Link href={`/profile/${post.authorId}`}>{post.author?.name}</Link>
+          </p>
           <p className="status-bar-field">Views: {post.views}</p>
           <p className="status-bar-field">
             Created At: {new Date(post.createdAt).toLocaleDateString()}
