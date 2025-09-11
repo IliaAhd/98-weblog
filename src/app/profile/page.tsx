@@ -24,6 +24,10 @@ export default async function ProfilePage() {
       },
     },
   });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/avatar/${session?.user?.id}`
+  );
+  const img = await res.json();
 
   if (!user?.Post || !user.Post.length)
     return (
@@ -36,7 +40,7 @@ export default async function ProfilePage() {
 
   return (
     <div>
-      <Profile session={session} />
+      <Profile user={user} avatar={img.avatar} isPrivateProfile={true} />
 
       <div>
         <div

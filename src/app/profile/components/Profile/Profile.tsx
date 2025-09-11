@@ -1,24 +1,36 @@
-import { Session } from "next-auth";
 import styles from "@/app/profile/components/Profile/Profile.module.css";
+import { UserWithPosts } from "@/utils/types";
+import Image from "next/image";
 
-export default function Profile({ session }: { session: Session }) {
+export default function Profile({
+  user,
+  isPrivateProfile = false,
+  avatar,
+}: {
+  user: UserWithPosts;
+  avatar?: string;
+  isPrivateProfile?: boolean;
+}) {
   return (
-    <div
-      className="title-bar inactive"
-      style={{
-        maxWidth: "800px",
-        marginInline: "auto",
-        paddingInline: "1rem",
-      }}
-    >
-      <h1 className="title-bar-text" style={{ fontSize: "1rem" }}>
-        {session.user?.name}
-        <span className={styles.title}>&apos;s profile</span>
-      </h1>
+    <div className={`title-bar inactive ${styles.profile}`}>
+      <div className={styles.title}>
+        <Image
+          className={styles.avatar}
+          src={avatar || user.image || "/default-avatar.png"}
+          alt={`${user?.name}'s avatar`}
+          width={48}
+          height={48}
+        />
+        <div className={`title-bar-text ${styles.info}`}>
+          <h1 style={{ fontSize: "1rem" }}>{user?.name}</h1>
+          <div className={styles.status}>
+            <span style={{ fontWeight: "bold" }}>{user.Post?.length}</span>
+            <span>Posts</span>
+          </div>
+        </div>
+      </div>
 
-      <h2 style={{ fontSize: "1rem" }}>
-        <span className={styles.title}>Your email:</span> {session.user?.email}
-      </h2>
+      {isPrivateProfile && <h2 style={{ fontSize: "1rem" }}>{user?.email}</h2>}
     </div>
   );
 }
