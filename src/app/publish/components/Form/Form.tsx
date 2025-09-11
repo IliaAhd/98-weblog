@@ -55,15 +55,6 @@ export default function Form() {
     }
   };
 
-  if (posted)
-    return (
-      <Warn
-        title="Post published successfully!"
-        message="Navigating in 3 seconds to your post to see it live..."
-        img={successImg}
-      />
-    );
-
   return (
     <div>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -160,6 +151,14 @@ export default function Form() {
           </button>
         </div>
       </form>
+
+      {posted && (
+        <Warn
+          title="Post published successfully!"
+          message="Navigating in 3 seconds to your post to see it live..."
+          img={successImg}
+        />
+      )}
     </div>
   );
 }
