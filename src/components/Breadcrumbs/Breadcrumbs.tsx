@@ -30,7 +30,7 @@ const Breadcrumbs = () => {
       <div className="title-bar">
         <div className="title-bar-text">Navigation</div>
       </div>
-      <div className="window-body">
+      <div className="window-body" style={{ padding: 0, margin: 0 }}>
         <div
           style={{
             display: "flex",
