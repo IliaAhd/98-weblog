@@ -46,20 +46,8 @@
   padding-block: 5px;
 }
 
-@media (width <= 700px) {
-  .title div {
-    font-size: 1rem;
-  }
-}
-
 .content {
   white-space: pre-wrap;
-}
-
-@media (width <= 700px) {
-  .content {
-    font-size: 1.2rem;
-  }
 }
 
 .status {
@@ -78,5 +66,15 @@
   .status {
     font-size: 1rem !important;
     flex-direction: column;
+  }
+}
+
+@media (width <= 700px) {
+  .title div {
+    font-size: 1rem;
+  }
+
+  .content {
+    font-size: 1.2rem;
   }
 }
