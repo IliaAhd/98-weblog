@@ -5,7 +5,7 @@
 
 .profile {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   gap: 1rem;
   max-width: 800px;
   margin-inline: auto;
@@ -19,6 +19,7 @@
 .avatar {
   border-radius: 100%;
   border: 1px solid #ddd;
+  background-color: #008080;
 }
 
 .status {
