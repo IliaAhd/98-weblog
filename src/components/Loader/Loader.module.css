@@ -19,6 +19,7 @@
   border: 2px inset #ccc;
   background: #e0e0e0;
   overflow: hidden;
+  margin-inline: 0.3rem;
 }
 
 .progressBar {
