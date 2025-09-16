@@ -12,7 +12,7 @@ export default async function Post({
   const { id } = await params;
   const post = await prisma.post.findUnique({
     where: { id: +id },
-    include: { author: true },
+    include: { author: true, likes: true },
   });
 
   if (!post)

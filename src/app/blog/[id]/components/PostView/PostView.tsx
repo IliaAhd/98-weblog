@@ -2,19 +2,24 @@
 
 import styles from "@/app/blog/[id]/components/PostView/PostView.module.css";
 import Warn from "@/components/Warn/Warn";
-import { Post, User } from "@prisma/client";
+import { Like, Post, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+
 import trashImg from "/public/recycle_bin_file.png";
 import editImg from "/public/true_type_paint.png";
 import successImg from "/public/success.png";
-import { deletePost, editPost } from "@/lib/actions";
-import Link from "next/link";
+import heartFillImg from "/public/heart_fill.png";
+import heartEmptyImg from "/public/heart_empty.png";
+
+import { deletePost, editPost, likePost, unlikePost } from "@/lib/actions";
 
 interface PostWithAuthor extends Post {
   author: User | null;
+  likes: Like[];
 }
 
 interface PostViewProps {
@@ -24,35 +29,65 @@ interface PostViewProps {
 export default function PostView({ post }: PostViewProps) {
   const { data } = useSession();
   const router = useRouter();
-  const [showModal, setShowModal] = useState<"delete" | "edit" | null>(null);
-  const [message, setMessage] = useState<null | string>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<null | string>(null);
 
-  async function handleDeletePost() {
+  const isAuthor = post.authorId === data?.user?.id;
+
+  // likes state
+  const likedByUser = post.likes.some((like) => like.userId === data?.user?.id);
+  const [liked, setLiked] = useState(likedByUser);
+  const [likeCount, setLikeCount] = useState(post.likes.length);
+
+  // UI state
+  const [showModal, setShowModal] = useState<"delete" | "edit" | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  /** Toggle like with optimistic UI */
+  async function toggleLike() {
+    if (!data?.user?.id) return;
+    if (liked) {
+      setLiked(false);
+      setLikeCount((c) => c - 1);
+      try {
+        await unlikePost(post.id);
+      } catch {
+        setLiked(true);
+        setLikeCount((c) => c + 1);
+      }
+    } else {
+      setLiked(true);
+      setLikeCount((c) => c + 1);
+      try {
+        await likePost(post.id);
+      } catch {
+        setLiked(false);
+        setLikeCount((c) => c - 1);
+      }
+    }
+  }
+
+  /** Delete post */
+  async function handleDelete() {
+    if (!isAuthor) return;
     try {
       setLoading(true);
-      if (post.authorId !== data?.user?.id) return;
-
       await deletePost(post.id);
-
       setMessage("Post deleted successfully!");
       setTimeout(() => router.push("/profile"), 3000);
-    } catch (err) {
-      console.error("Delete error:", err);
+    } catch {
       setError("Failed to delete post!");
     } finally {
       setLoading(false);
     }
   }
 
-  async function handleEditPost(e: React.FormEvent<HTMLFormElement>) {
+  /** Edit post */
+  async function handleEdit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
     try {
       setLoading(true);
       const formData = new FormData(e.currentTarget);
-
       await editPost(formData);
       setShowModal(null);
     } catch {
@@ -64,11 +99,12 @@ export default function PostView({ post }: PostViewProps) {
 
   return (
     <>
+      {/* Post */}
       <div className={`${styles.post} window`}>
         <div className="title-bar">
           <div className={`title-bar-text ${styles.title}`}>
             <div>{post.title}</div>
-            {post.authorId === data?.user?.id && (
+            {isAuthor && (
               <div>
                 <Image
                   className={styles.btn}
@@ -93,22 +129,50 @@ export default function PostView({ post }: PostViewProps) {
           </div>
         </div>
 
+        {/* Content */}
         <div className="window-body">
           <pre className={styles.content}>{post.content}</pre>
         </div>
 
+        {/* Likes / Views / Comments */}
+        <div className={`status-bar ${styles.status}`}>
+          <p
+            className="status-bar-field"
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}
+          >
+            <Image
+              onClick={toggleLike}
+              style={{ cursor: "pointer" }}
+              src={liked ? heartFillImg : heartEmptyImg}
+              alt="Like"
+              width={30}
+              height={30}
+            />
+            <span style={{ fontSize: "1rem" }}>{likeCount}</span>
+          </p>
+          <p className="status-bar-field">Views: {post.views}</p>
+          <p
+            className="status-bar-field"
+            style={{ color: "#616161" }}
+            title="Soon.."
+          >
+            Comments: 0
+          </p>
+        </div>
+
+        {/* Author / Date */}
         <div className={`status-bar ${styles.status}`}>
           <p className="status-bar-field">
             Author:{" "}
             <Link href={`/profile/${post.authorId}`}>{post.author?.name}</Link>
           </p>
-          <p className="status-bar-field">Views: {post.views}</p>
           <p className="status-bar-field">
             Created At: {new Date(post.createdAt).toLocaleDateString()}
           </p>
         </div>
       </div>
 
+      {/* Delete Modal */}
       {showModal === "delete" && (
         <Warn
           title="Warning!"
@@ -119,23 +183,14 @@ export default function PostView({ post }: PostViewProps) {
             <button disabled={loading} onClick={() => setShowModal(null)}>
               Close
             </button>
-            <button disabled={loading} onClick={handleDeletePost}>
+            <button disabled={loading} onClick={handleDelete}>
               Delete
             </button>
           </>
         </Warn>
       )}
 
-      {error && <Warn title="Something went wrong!" message={error} />}
-
-      {message && (
-        <Warn
-          title={message}
-          message="Navigating to your profile page in 3 seconds..."
-          img={successImg}
-        />
-      )}
-
+      {/* Edit Modal */}
       {showModal === "edit" && (
         <Warn
           title="Editing!"
@@ -144,7 +199,7 @@ export default function PostView({ post }: PostViewProps) {
           img={editImg}
         >
           <div className={styles.form}>
-            <form onSubmit={handleEditPost}>
+            <form onSubmit={handleEdit}>
               <div className="field-row-stacked">
                 <label htmlFor="title">Title</label>
                 <input
@@ -185,6 +240,16 @@ export default function PostView({ post }: PostViewProps) {
             </form>
           </div>
         </Warn>
+      )}
+
+      {/* Alerts */}
+      {error && <Warn title="Something went wrong!" message={error} />}
+      {message && (
+        <Warn
+          title={message}
+          message="Navigating to your profile page in 3 seconds..."
+          img={successImg}
+        />
       )}
     </>
   );

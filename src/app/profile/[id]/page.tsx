@@ -1,7 +1,6 @@
 import PostsView from "@/components/PostsView/PostsView";
 import Warn from "@/components/Warn/Warn";
 import { prisma } from "@/lib/prisma";
-import Image from "next/image";
 import Profile from "../components/Profile/Profile";
 
 export default async function UsersProfile({
@@ -13,7 +12,7 @@ export default async function UsersProfile({
   const user = await prisma.user.findUnique({
     where: { id },
     include: {
-      Post: {
+      posts: {
         orderBy: {
           createdAt: "desc",
         },
@@ -29,12 +28,10 @@ export default async function UsersProfile({
 
   return (
     <div>
-    
-
       <Profile user={user} avatar={img.avatar} />
 
       <div>
-        <PostsView posts={user?.Post} isProfile={true} />
+        <PostsView posts={user?.posts} isProfile={true} />
       </div>
     </div>
   );

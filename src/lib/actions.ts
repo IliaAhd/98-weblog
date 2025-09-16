@@ -91,3 +91,33 @@ export async function deletePost(id: number) {
 
   return await prisma.post.delete({ where: { id } });
 }
+
+export async function likePost(postId: number) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Not authenticated" };
+
+  try {
+    await prisma.like.create({
+      data: { userId: session.user.id, postId },
+    });
+    revalidatePath(`/blog/${postId}`);
+    return { success: true };
+  } catch {
+    return { success: false, error: "Already liked" };
+  }
+}
+
+export async function unlikePost(postId: number) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Not authenticated" };
+
+  try {
+    await prisma.like.delete({
+      where: { userId_postId: { userId: session.user.id, postId } },
+    });
+    revalidatePath(`/blog/${postId}`);
+    return { success: true };
+  } catch {
+    return { success: false, error: "Not liked yet" };
+  }
+}

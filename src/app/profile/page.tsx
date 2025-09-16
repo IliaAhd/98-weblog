@@ -19,7 +19,7 @@ export default async function ProfilePage() {
   const user = await prisma.user.findUnique({
     where: { id: session?.user?.id },
     include: {
-      Post: {
+      posts: {
         orderBy: { createdAt: "desc" },
       },
     },
@@ -29,7 +29,7 @@ export default async function ProfilePage() {
   );
   const img = await res.json();
 
-  if (!user?.Post || !user.Post.length)
+  if (!user?.posts || !user.posts.length)
     return (
       <Warn title="No posts yet" message="Share your first post">
         <button>
@@ -54,7 +54,7 @@ export default async function ProfilePage() {
         >
           <div className="title-bar-text">Your posts</div>
         </div>
-        <PostsView posts={user?.Post} isProfile={true} />
+        <PostsView posts={user?.posts} isProfile={true} />
       </div>
     </div>
   );
