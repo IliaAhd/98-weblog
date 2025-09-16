@@ -89,6 +89,8 @@ export async function deletePost(id: number) {
 
   if (post.authorId !== session.user?.id) throw new Error("Not authorized");
 
+  await prisma.like.deleteMany({ where: { postId: id } });
+
   return await prisma.post.delete({ where: { id } });
 }
 
