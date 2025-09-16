@@ -28,7 +28,7 @@ export default function Profile({
               <div style={{ fontSize: "1.5rem" }}>{user?.name}</div>
 
               <div className={`${styles.status} ${styles.mHidden}`}>
-                <span>{user.Post?.length}</span>
+                <span>{user.posts?.length}</span>
                 <span>Posts</span>
               </div>
             </div>
@@ -38,7 +38,7 @@ export default function Profile({
             )}
 
             <div className={`${styles.status} ${styles.dHidden}`}>
-              <span>{user.Post?.length}</span>
+              <span>{user.posts?.length}</span>
               <span>Posts</span>
             </div>
           </div>

@@ -5,5 +5,5 @@ export type PostWithAuthor = Post & {
 };
 
 export type UserWithPosts = User & {
-  Post?: Post[] | null;
+  posts?: Post[] | null;
 };
