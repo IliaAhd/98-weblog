@@ -1,4 +1,3 @@
-import { Post, User } from "@prisma/client";
 import styles from "./PostsView.module.css";
 import Link from "next/link";
 import { PostWithAuthor } from "@/utils/types";
