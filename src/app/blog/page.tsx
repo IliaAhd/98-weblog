@@ -10,10 +10,11 @@ export const dynamic = "force-dynamic";
 export default async function PostsPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const postsPerPage = POSTS_PER_PAGE;
-  const currentPage = Number(searchParams?.page) || 1;
+  const params = await searchParams;
+  const currentPage = Number(params.page) || 1;
 
   const [posts, totalPosts] = await Promise.all([
     prisma.post.findMany({
