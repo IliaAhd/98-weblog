@@ -4,6 +4,7 @@ import "98.css";
 import "./globals.css";
 import Link from "next/link";
 import Warn from "@/components/Warn/Warn";
+import Navbar from "@/components/Navbar/Navbar";
 
 const bodyStyles = {
   display: "flex",
@@ -27,7 +28,10 @@ export default function GlobalError({
             <button>
               <Link href="/">Go to Home</Link>
             </button>
-            <button onClick={() => reset()}>Try again</button>
+
+            <button style={{ padding: "0.5rem" }} onClick={reset}>
+              Try again
+            </button>
           </>
         </Warn>
       </body>
