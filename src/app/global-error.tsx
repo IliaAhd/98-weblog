@@ -4,7 +4,6 @@ import "98.css";
 import "./globals.css";
 import Link from "next/link";
 import Warn from "@/components/Warn/Warn";
-import Navbar from "@/components/Navbar/Navbar";
 
 const bodyStyles = {
   display: "flex",
