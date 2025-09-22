@@ -29,33 +29,34 @@ export default async function ProfilePage() {
   );
   const img = await res.json();
 
-  if (!user?.posts || !user.posts.length)
-    return (
-      <Warn title="No posts yet" message="Share your first post">
-        <button>
-          <Link href="/publish">Publish</Link>
-        </button>
-      </Warn>
-    );
-
   return (
     <div>
-      <Profile user={user} avatar={img.avatar} isPrivateProfile={true} />
+      {user && (
+        <Profile user={user} avatar={img.avatar} isPrivateProfile={true} />
+      )}
 
-      <div>
-        <div
-          className="title-bar"
-          style={{
-            maxWidth: "1100px",
-            fontSize: "1rem",
-            marginTop: "1rem",
-            marginInline: "auto",
-          }}
-        >
-          <div className="title-bar-text">Your posts</div>
+      {!user?.posts || !user.posts.length ? (
+        <Warn title="No posts yet" message="Share your first post">
+          <button>
+            <Link href="/publish">Publish</Link>
+          </button>
+        </Warn>
+      ) : (
+        <div>
+          <div
+            className="title-bar"
+            style={{
+              maxWidth: "1100px",
+              fontSize: "1rem",
+              marginTop: "1rem",
+              marginInline: "auto",
+            }}
+          >
+            <div className="title-bar-text">Your posts</div>
+          </div>
+          <PostsView posts={user?.posts} isProfile={true} />
         </div>
-        <PostsView posts={user?.posts} isProfile={true} />
-      </div>
+      )}
     </div>
   );
 }
