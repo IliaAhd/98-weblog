@@ -36,11 +36,13 @@ export default async function ProfilePage() {
       )}
 
       {!user?.posts || !user.posts.length ? (
-        <Warn title="No posts yet" message="Share your first post">
+        <div style={{ textAlign: "center" }}>
+          <h3>No posts yet!</h3>
+          <h4>Share your first post!</h4>
           <button>
             <Link href="/publish">Publish</Link>
           </button>
-        </Warn>
+        </div>
       ) : (
         <div>
           <div
