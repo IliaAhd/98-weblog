@@ -1,6 +1,7 @@
 import styles from "./PostsView.module.css";
 import Link from "next/link";
 import { PostWithAuthor } from "@/utils/types";
+import { formatDistanceStrict } from "date-fns";
 
 export default function PostsView({
   posts,
@@ -38,7 +39,15 @@ export default function PostsView({
                     {post.author?.name}
                   </Link>
                 ) : (
-                  post.createdAt.toLocaleDateString()
+                  <span title={new Date(post.createdAt).toDateString()}>
+                    {formatDistanceStrict(
+                      new Date(post.createdAt),
+                      new Date(),
+                      {
+                        addSuffix: true,
+                      }
+                    )}
+                  </span>
                 )}
               </td>
             </tr>

@@ -13,6 +13,7 @@
     "@prisma/client": "^6.15.0",
     "@prisma/extension-accelerate": "^2.0.2",
     "98.css": "^0.1.21",
+    "date-fns": "^4.1.0",
     "next": "15.4.5",
     "next-auth": "^5.0.0-beta.29",
     "react": "19.1.0",

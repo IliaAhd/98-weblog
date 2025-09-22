@@ -16,6 +16,7 @@ import heartFillImg from "/public/heart_fill.png";
 import heartEmptyImg from "/public/heart_empty.png";
 
 import { deletePost, editPost, likePost, unlikePost } from "@/lib/actions";
+import { formatDistanceStrict } from "date-fns";
 
 interface PostWithAuthor extends Post {
   author: User | null;
@@ -166,8 +167,13 @@ export default function PostView({ post }: PostViewProps) {
             Author:{" "}
             <Link href={`/profile/${post.authorId}`}>{post.author?.name}</Link>
           </p>
-          <p className="status-bar-field">
-            Created At: {new Date(post.createdAt).toLocaleDateString()}
+          <p
+            title={new Date(post.createdAt).toDateString()}
+            className="status-bar-field"
+          >
+            {formatDistanceStrict(new Date(post.createdAt), new Date(), {
+              addSuffix: true,
+            })}
           </p>
         </div>
       </div>
