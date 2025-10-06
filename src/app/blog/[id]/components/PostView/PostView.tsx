@@ -32,6 +32,7 @@ export default function PostView({ post }: PostViewProps) {
   const router = useRouter();
 
   const isAuthor = post.authorId === data?.user?.id;
+  const isAdmin = data?.user?.role === "ADMIN";
 
   // likes state
   const likedByUser = post.likes.some((like) => like.userId === data?.user?.id);
@@ -70,7 +71,7 @@ export default function PostView({ post }: PostViewProps) {
 
   /** Delete post */
   async function handleDelete() {
-    if (!isAuthor) return;
+    if (!isAuthor && !isAdmin) return;
     try {
       setLoading(true);
       await deletePost(post.id);
@@ -105,17 +106,19 @@ export default function PostView({ post }: PostViewProps) {
         <div className="title-bar">
           <div className={`title-bar-text ${styles.title}`}>
             <div>{post.title}</div>
-            {isAuthor && (
+            {(isAuthor || isAdmin) && (
               <div>
-                <Image
-                  className={styles.btn}
-                  onClick={() => setShowModal("edit")}
-                  width={35}
-                  height={35}
-                  src={editImg}
-                  alt="edit"
-                  title="Edit your post"
-                />
+                {isAuthor && (
+                  <Image
+                    className={styles.btn}
+                    onClick={() => setShowModal("edit")}
+                    width={35}
+                    height={35}
+                    src={editImg}
+                    alt="edit"
+                    title="Edit your post"
+                  />
+                )}
                 <Image
                   className={styles.btn}
                   onClick={() => setShowModal("delete")}
@@ -123,7 +126,7 @@ export default function PostView({ post }: PostViewProps) {
                   height={35}
                   src={trashImg}
                   alt="delete"
-                  title="Delete your post"
+                  title="Delete post"
                 />
               </div>
             )}
@@ -182,7 +185,7 @@ export default function PostView({ post }: PostViewProps) {
       {showModal === "delete" && (
         <Warn
           title="Warning!"
-          message="Are you sure you want to delete your post?"
+          message="Are you sure you want to delete this post?"
           handleClose={() => setShowModal(null)}
         >
           <>

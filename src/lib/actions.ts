@@ -77,21 +77,24 @@ export async function editPost(formData: FormData) {
 
 export async function deletePost(id: number) {
   const session = await auth();
-
   if (!session) throw new Error("Not Authenticated!");
 
   const post = await prisma.post.findUnique({
     where: { id },
-    select: { authorId: true },
+    select: { authorId: true, title: true },
   });
 
   if (!post) throw new Error("Post not found!");
 
-  if (post.authorId !== session.user?.id) throw new Error("Not authorized");
+  const isAdmin = session.user.role === "ADMIN";
+  const isAuthor = post.authorId === session.user.id;
+
+  if (!isAdmin && !isAuthor) throw new Error("Not authorized");
 
   await prisma.like.deleteMany({ where: { postId: id } });
+  const deletedPost = await prisma.post.delete({ where: { id } });
 
-  return await prisma.post.delete({ where: { id } });
+  return deletedPost;
 }
 
 export async function likePost(postId: number) {
@@ -123,3 +126,52 @@ export async function unlikePost(postId: number) {
     return { success: false, error: "Not liked yet" };
   }
 }
+
+// export async function createNotification({
+//   userId,
+//   actorId,
+//   postId,
+//   postTitle,
+//   message,
+// }: {
+//   userId: string;
+//   actorId?: string;
+//   postId?: number;
+//   postTitle?: string;
+//   message: string;
+// }) {
+//   return await prisma.notification.create({
+//     data: {
+//       userId,
+//       actorId,
+//       postId,
+//       postTitle,
+//       message,
+//     },
+//   });
+// }
+
+// export async function getNotifications() {
+//   const session = await auth();
+//   if (!session) throw new Error("Unauthorized");
+
+//   return await prisma.notification?.findMany({
+//     where: { userId: session.user.id },
+//     orderBy: { createdAt: "desc" },
+//   });
+// }
+
+// export async function markNotificationAsRead(id: number) {
+//   const session = await auth();
+//   if (!session) throw new Error("Unauthorized");
+
+//   const notif = await prisma.notification.findUnique({ where: { id } });
+//   if (!notif || notif.userId !== session.user.id) {
+//     throw new Error("Forbidden");
+//   }
+
+//   return await prisma.notification.update({
+//     where: { id },
+//     data: { read: true },
+//   });
+// }

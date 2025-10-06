@@ -32,7 +32,9 @@ export default async function ProfilePage() {
   return (
     <div>
       {user && (
-        <Profile user={user} avatar={img.avatar} isPrivateProfile={true} />
+        <>
+          <Profile user={user} avatar={img.avatar} isPrivateProfile={true} />
+        </>
       )}
 
       {!user?.posts || !user.posts.length ? (

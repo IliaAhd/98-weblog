@@ -28,6 +28,12 @@ model User {
 
   posts Post[]
   likes Like[]
+
+  warns Warn[]
+  role  Role @default(USER)
+
+  notifications Notification[]
+  actorNotifications Notification[] @relation("NotificationActor")
 }
 
 model Post {
@@ -55,6 +61,19 @@ model Like {
   createdAt DateTime @default(now())
 
   @@unique([userId, postId]) 
+}
+
+model Warn {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  message   String
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Account {
@@ -111,3 +130,21 @@ model Authenticator {
  
   @@id([userId, credentialID])
 }
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  actorId   String?
+  actor     User?    @relation("NotificationActor", fields: [actorId], references: [id], onDelete: Cascade)
+
+  postId    Int?
+  postTitle String?  
+
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
