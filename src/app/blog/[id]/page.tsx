@@ -5,8 +5,12 @@ import Link from "next/link";
 import Views from "@/components/Views";
 import { siteUrl } from "@/utils/site";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const { id } = params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const post = await prisma.post.findUnique({
     where: { id: +id },
     include: { author: true, likes: true },
@@ -90,8 +94,8 @@ export default async function Post({
             },
             datePublished: post.createdAt?.toISOString?.(),
             dateModified: post.updatedAt?.toISOString?.(),
-            url: `${siteUrl}/blog/${post.id}`,
-            image: `${siteUrl}/favicon.ico`,
+            url: `https://98weblog.com/blog/${post.id}`,
+            image: "https://98weblog.com/favicon.ico",
           }),
         }}
       />
