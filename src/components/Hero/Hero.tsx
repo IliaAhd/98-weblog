@@ -3,41 +3,46 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="window-body">
-      <div>
+    <div
+      className="window"
+      style={{ maxWidth: "1100px", margin: "1.5rem auto" }}
+    >
+      <div className="title-bar">
+        <div className="title-bar-text">98 Weblog</div>
+        <div className="title-bar-controls">
+          <button aria-label="Minimize" />
+          <button aria-label="Maximize" />
+          <button aria-label="Close" />
+        </div>
+      </div>
+      <div className="window-body">
         <ul className={`tree-view ${styles.list}`}>
           <li>
-            <strong className={styles.title}>
-              ✨98 Weblog <span>— Share Your Thoughts, 90s Style ✨</span>
-            </strong>
+            <strong className={styles.title}>✨98 Weblog</strong>
+            <div className={styles.subtitle}>
+              Share your thoughts, 90s style
+            </div>
           </li>
-          <br />
+
           <li>
-            Welcome to 98 Weblog, the coolest place on the internet (if it were
-            still 1998). Post your thoughts, rants, or daily adventures just
-            like tweeting — but with the charm of a Windows 98 desktop.
+            Welcome to 98 Weblog — post short entries and enjoy a retro, focused
+            reading experience.
           </li>
-          <br />
-          <li>
-            No algorithms. No ads. Just you, your words, and a bunch of other
-            nostalgic netizens.
-          </li>
-          <br />
+
+          <li>No algorithms. No ads. Just your words.</li>
+
           <li>Features:</li>
           <ul>
-            <li>📝 Write and share your own mini-blogs.</li>
-            <li>💬 See what others are posting in real time.</li>
-            <li>🎨 Enjoy the authentic 98.css retro look.</li>
-            <li>✨ New features coming soon...</li>
+            <li>📝 Write and share short posts.</li>
+            <li>💬 Lightweight interactions and likes.</li>
+            <li>🎨 Retro UI powered by 98.css.</li>
           </ul>
-          <br />
+
           <li className={styles.navList}>
-            <Link className={styles.navLink} href="/publish">
+            <Link className="default" href="/publish">
               Get started
             </Link>
-            <Link className={styles.navLink} href="/blog">
-              Visit blog
-            </Link>
+            <Link href="/blog">Visit blog</Link>
           </li>
         </ul>
       </div>
