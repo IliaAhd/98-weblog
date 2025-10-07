@@ -1,4 +1,3 @@
-import { getNotifications, markNotificationAsRead } from "@/lib/actions";
 import NotificationItem from "./NotificationsItem";
 
 type Notification = {

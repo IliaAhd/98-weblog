@@ -1,6 +1,5 @@
 "use client";
 
-import { markNotificationAsRead } from "@/lib/actions";
 import { useState, useTransition } from "react";
 
 export type Notification = {
