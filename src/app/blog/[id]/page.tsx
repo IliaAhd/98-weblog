@@ -3,22 +3,19 @@ import PostView from "./components/PostView/PostView";
 import Warn from "@/components/Warn/Warn";
 import Link from "next/link";
 import Views from "@/components/Views";
+import { siteUrl } from "@/utils/site";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { id } = params;
   const post = await prisma.post.findUnique({
     where: { id: +id },
     include: { author: true, likes: true },
   });
   if (!post) return {};
-  const url = `https://98weblog.com/blog/${post.id}`;
+  const url = `${siteUrl}/blog/${post.id}`;
   const description =
     post.content?.slice(0, 160) || "Read this post on 98 Weblog.";
-  const image = "https://98weblog.com/favicon.ico";
+  const image = `${siteUrl}/favicon.ico`;
   return {
     title: post.title,
     description,
@@ -45,21 +42,8 @@ export async function generateMetadata({
       "article:modified_time": post.updatedAt?.toISOString?.(),
       // "article:tag": post.tags?.join(", ") || undefined,
     },
-    // JSON-LD structured data for blog post
-    jsonLd: {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      headline: post.title,
-      description,
-      author: {
-        "@type": "Person",
-        name: post.author?.name || "Unknown",
-      },
-      datePublished: post.createdAt?.toISOString?.(),
-      dateModified: post.updatedAt?.toISOString?.(),
-      url,
-      image,
-    },
+    // Note: JSON-LD is injected into the page output (see Post component) because
+    // Next's Metadata object doesn't accept a top-level `jsonLd` key.
   };
 }
 
@@ -91,6 +75,26 @@ export default async function Post({
   return (
     <>
       <PostView post={post} />
+      {/* JSON-LD structured data for the post */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: (post.content || "").slice(0, 160),
+            author: {
+              "@type": "Person",
+              name: post.author?.name || "Unknown",
+            },
+            datePublished: post.createdAt?.toISOString?.(),
+            dateModified: post.updatedAt?.toISOString?.(),
+            url: `${siteUrl}/blog/${post.id}`,
+            image: `${siteUrl}/favicon.ico`,
+          }),
+        }}
+      />
       <Views postId={post.id} />
     </>
   );

@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
+import { siteUrl } from "@/utils/site";
 
 export const metadata: Metadata = {
   title: "98 Weblog",
@@ -36,17 +37,17 @@ export default function RootLayout({
           content="98 Weblog - A simple retro blog platform built with Next.js and 98.css"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://98weblog.com/" />
-        <meta property="og:image" content="https://98weblog.com/favicon.ico" />
+  <meta property="og:url" content={siteUrl + "/"} />
+  <meta property="og:image" content={siteUrl + "/favicon.ico"} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="98 Weblog" />
         <meta
           name="twitter:description"
           content="98 Weblog - A simple retro blog platform built with Next.js and 98.css"
         />
-        <meta name="twitter:image" content="https://98weblog.com/favicon.ico" />
-        <link rel="canonical" href="https://98weblog.com/" />
-        <link rel="alternate" hrefLang="en" href="https://98weblog.com/" />
+  <meta name="twitter:image" content={siteUrl + "/favicon.ico"} />
+  <link rel="canonical" href={siteUrl + "/"} />
+  <link rel="alternate" hrefLang="en" href={siteUrl + "/"} />
       </head>
       <body>
         <SessionProvider>

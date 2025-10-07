@@ -1,10 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { Post } from "@prisma/client";
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  process.env.SITE_URL ??
-  "https://98-weblog.vercel.app";
+import { siteUrl } from "@/utils/site";
 
 export default async function sitemap() {
   const posts = await prisma.post.findMany();
