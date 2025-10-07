@@ -20,6 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="google-site-verification"
+          content="lYiZEcAi_DBkCSa1z6VG049H1Xz7xUdxDamnzU2UGPI"
+        />
+      </head>
       <body>
         <SessionProvider>
           <div
