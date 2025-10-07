@@ -4,6 +4,25 @@ import Warn from "@/components/Warn/Warn";
 import Link from "next/link";
 import Views from "@/components/Views";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const post = await prisma.post.findUnique({
+    where: { id: +id },
+    include: { author: true, likes: true },
+  });
+
+  if (!post) return {};
+
+  return {
+    title: post.title,
+    content: post.content,
+  };
+}
+
 export default async function Post({
   params,
 }: {
