@@ -6,7 +6,7 @@ import { Like, Post, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import trashImg from "/public/recycle_bin_file.png";
@@ -34,10 +34,21 @@ export default function PostView({ post }: PostViewProps) {
   const isAuthor = post.authorId === data?.user?.id;
   const isAdmin = data?.user?.role === "ADMIN";
 
-  // likes state
-  const likedByUser = post.likes.some((like) => like.userId === data?.user?.id);
-  const [liked, setLiked] = useState(likedByUser);
+  const [liked, setLiked] = useState<boolean>(() => {
+    const uid = data?.user?.id;
+    return !!(uid && post.likes.some((like) => like.userId === uid));
+  });
   const [likeCount, setLikeCount] = useState(post.likes.length);
+
+  useEffect(() => {
+    const uid = data?.user?.id;
+    if (uid) {
+      setLiked(post.likes.some((like) => like.userId === uid));
+    } else {
+      setLiked(false);
+    }
+    setLikeCount(post.likes.length);
+  }, [data?.user?.id, post.likes]);
 
   // UI state
   const [showModal, setShowModal] = useState<"delete" | "edit" | null>(null);
@@ -135,7 +146,9 @@ export default function PostView({ post }: PostViewProps) {
 
         {/* Content */}
         <div className="window-body">
-          <pre className={styles.content}>{post.content}</pre>
+          <pre className={styles.content} dir="auto">
+            {post.content}
+          </pre>
         </div>
 
         {/* Likes / Views / Comments */}
