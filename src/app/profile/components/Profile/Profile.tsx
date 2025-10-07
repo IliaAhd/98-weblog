@@ -1,5 +1,5 @@
 import styles from "@/app/profile/components/Profile/Profile.module.css";
-import { UserWithPosts } from "@/utils/types";
+import { UserWithPosts } from "@/types/types";
 import Image from "next/image";
 
 export default function Profile({

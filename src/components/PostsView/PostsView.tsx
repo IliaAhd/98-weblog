@@ -1,6 +1,6 @@
 import styles from "./PostsView.module.css";
 import Link from "next/link";
-import { PostWithAuthor } from "@/utils/types";
+import { PostWithAuthor } from "@/types/types";
 import { formatDistanceStrict } from "date-fns";
 
 export default function PostsView({
