@@ -1,20 +1,23 @@
 import { prisma } from "@/lib/prisma";
 import { Post } from "@prisma/client";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.SITE_URL ??
+  "https://98-weblog.vercel.app";
+
 export default async function sitemap() {
-  const getPosts = await prisma.post.findMany();
-  const post = getPosts.map((post: Post) => {
-    return {
-      url: `https://98-weblog.vercel.app/blog/${post.id}`,
-      lastModified: post.updatedAt,
-    };
-  });
+  const posts = await prisma.post.findMany();
+  const urls = posts.map((p: Post) => ({
+    url: `${siteUrl}/blog/${p.id}`,
+    lastModified: p.updatedAt,
+  }));
 
   return [
     {
-      url: "https://98-weblog.vercel.app",
+      url: siteUrl,
       lastModified: new Date(),
     },
-    ...post,
+    ...urls,
   ];
 }
