@@ -1,9 +1,8 @@
-import { prisma } from "@/lib/prisma";
-import PostView from "./components/PostView/PostView";
 import Warn from "@/components/Warn/Warn";
-import Link from "next/link";
-
+import { prisma } from "@/lib/prisma";
 import { siteUrl } from "@/utils/site";
+import Link from "next/link";
+import PostView from "./components/PostView/PostView";
 
 export async function generateMetadata({
   params,
@@ -15,11 +14,15 @@ export async function generateMetadata({
     where: { id: +id },
     include: { author: true, likes: true },
   });
+
   if (!post) return {};
+
   const url = `${siteUrl}/blog/${post.id}`;
+
   const description =
     post.content?.slice(0, 160) || "Read this post on 98 Weblog.";
   const image = `${siteUrl}/favicon.ico`;
+
   return {
     title: post.title,
     description,
@@ -44,10 +47,9 @@ export async function generateMetadata({
       "article:author": post.author?.name || undefined,
       "article:published_time": post.createdAt?.toISOString?.(),
       "article:modified_time": post.updatedAt?.toISOString?.(),
-      // "article:tag": post.tags?.join(", ") || undefined,
+      "article:section": "Blog",
+      "article:tag": post.title,
     },
-    // Note: JSON-LD is injected into the page output (see Post component) because
-    // Next's Metadata object doesn't accept a top-level `jsonLd` key.
   };
 }
 
@@ -94,8 +96,8 @@ export default async function Post({
             },
             datePublished: post.createdAt?.toISOString?.(),
             dateModified: post.updatedAt?.toISOString?.(),
-            url: `https://98weblog.com/blog/${post.id}`,
-            image: "https://98weblog.com/favicon.ico",
+            url: `${siteUrl}/blog/${post.id}`,
+            image: `${siteUrl}/favicon.ico`,
           }),
         }}
       />
