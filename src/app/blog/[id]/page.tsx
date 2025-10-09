@@ -24,7 +24,7 @@ export async function generateMetadata({
   const image = `${siteUrl}/favicon.ico`;
 
   return {
-    title: post.title,
+    title: `98 Weblog - ${post.title}`,
     description,
     openGraph: {
       title: post.title,

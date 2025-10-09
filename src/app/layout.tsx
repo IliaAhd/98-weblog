@@ -37,17 +37,17 @@ export default function RootLayout({
           content="98 Weblog - A simple retro blog platform built with Next.js and 98.css"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={siteUrl + "/"} />
-        <meta property="og:image" content={siteUrl + "/favicon.ico"} />
+        <meta property="og:url" content={`${siteUrl}/`} />
+        <meta property="og:image" content={`${siteUrl}/favicon.ico`} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content="98 Weblog" />
         <meta
           name="twitter:description"
           content="98 Weblog - A simple retro blog platform built with Next.js and 98.css"
         />
-        <meta name="twitter:image" content={siteUrl + "/favicon.ico"} />
-        <link rel="canonical" href={siteUrl + "/"} />
-        <link rel="alternate" hrefLang="en" href={siteUrl + "/"} />
+        <meta name="twitter:image" content={`${siteUrl}/favicon.ico`} />
+        <link rel="canonical" href={`${siteUrl}/`} />
+        <link rel="alternate" hrefLang="en" href={`${siteUrl}/`} />
       </head>
       <body>
         <SessionProvider>
@@ -66,9 +66,7 @@ export default function RootLayout({
                 <main>{children}</main>
               </Container>
             </div>
-            <div>
-              <Footer />
-            </div>
+            <Footer />
           </div>
         </SessionProvider>
       </body>
