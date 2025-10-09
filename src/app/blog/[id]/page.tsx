@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import PostView from "./components/PostView/PostView";
 import Warn from "@/components/Warn/Warn";
 import Link from "next/link";
-import Views from "@/components/Views";
+
 import { siteUrl } from "@/utils/site";
 
 export async function generateMetadata({
@@ -99,7 +99,6 @@ export default async function Post({
           }),
         }}
       />
-      <Views postId={post.id} />
     </>
   );
 }

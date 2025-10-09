@@ -41,6 +41,10 @@ export default function PostView({ post }: PostViewProps) {
   const [likeCount, setLikeCount] = useState(post.likes.length);
 
   useEffect(() => {
+    fetch(`/api/views/${post.id}`, { method: "POST" });
+  }, [post.id]);
+
+  useEffect(() => {
     const uid = data?.user?.id;
     if (uid) {
       setLiked(post.likes.some((like) => like.userId === uid));
